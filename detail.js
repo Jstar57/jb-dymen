@@ -1,6 +1,6 @@
 // Konfigurasi Supabase (Sesuaikan URL & Anon Key Anda)
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'https://hhpdzobytbirrttqvwka.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhocGR6b2J5dGJpcnJ0dHF2d2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMDM4MzQsImV4cCI6MjEwMTY3OTgzNH0.WA2ztplgz3zOsUsm4R9m8YBY0naqEBtHC0VNtOKwIYw';
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const urlParams = new URLSearchParams(window.location.search);
