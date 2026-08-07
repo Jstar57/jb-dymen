@@ -134,3 +134,33 @@ searchInput.addEventListener('input', (e) => {
 
 // Panggil fungsi utama saat halaman dimuat
 fetchProductsFromSupabase();
+// --- SISTEM PENGECEKAN LOGIN ADMIN DI NAVBAR ---
+async function checkAdminSession() {
+    const adminMenuSlot = document.getElementById('adminMenuSlot');
+    if (!adminMenuSlot) return;
+
+    // Cek apakah ada sesi aktif di Supabase
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) {
+        // Jika statusnya sudah login sebagai admin
+        adminMenuSlot.style.display = 'inline-block';
+        adminMenuSlot.innerHTML = `
+            <a href="admin-upload.html" style="color: #00ffcc; border: 1px dashed #00ffcc; padding: 3px 8px; border-radius: 4px;">⚙️ Upload Akun</a>
+            <a href="#" id="btnLogout" style="color: #ff3333; margin-left: 10px;">Keluar</a>
+        `;
+
+        // Tombol Logout
+        document.getElementById('btnLogout').addEventListener('click', async (e) => {
+            e.preventDefault();
+            await supabase.auth.signOut();
+            window.location.reload(); // Refresh halaman setelah logout
+        });
+    } else {
+        // Jika belum login (pengunjung biasa), sembunyikan menu admin
+        adminMenuSlot.style.display = 'none';
+    }
+}
+
+// Jalankan fungsi cek sesi saat halaman dimuat bareng fetch produk
+checkAdminSession();
