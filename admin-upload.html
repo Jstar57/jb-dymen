@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Upload Akun - Dymen Point</title>
+    <link rel="stylesheet" href="jb.css">
+    <style>
+        .upload-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #11141a;
+            border: 2px solid var(--primary-tosca);
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: var(--white);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid var(--primary-tosca);
+            border-radius: 5px;
+            color: var(--white);
+            font-size: 1rem;
+            outline: none;
+        }
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        .form-group input[type="file"] {
+            border: 2px dashed var(--primary-tosca);
+            cursor: pointer;
+        }
+        .btn-submit {
+            background-color: var(--primary-tosca);
+            color: var(--bg-color);
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: var(--light-tosca);
+        }
+        #errorMsg {
+            color: #ff3333;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        #successMsg {
+            color: #00ffcc;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <div class="logo">DYMEN <span>ADMIN</span></div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="upload-container">
+        <h2 class="section-title">Upload Akun Game Baru</h2>
+        <div id="errorMsg"></div>
+        <div id="successMsg"></div>
+
+        <form id="uploadForm">
+            <div class="form-group">
+                <label>Judul Akun (Contoh: MLBB - Mythical Glory Max Skin Collector)</label>
+                <input type="text" id="title" required placeholder="Masukkan judul akun...">
+            </div>
+
+            <div class="form-group">
+                <label>Kategori Game</label>
+                <select id="category" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="mlbb">Mobile Legends</option>
+                    <option value="ff">Free Fire</option>
+                    <option value="guardian tales">Guardian Tales</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Harga (Rupiah, cukup angka saja)</label>
+                <input type="number" id="price" required placeholder="Contoh: 350000">
+            </div>
+
+            <div class="form-group">
+                <label>Deskripsi Akun (Spesifikasi, Skin, Bind, dll)</label>
+                <textarea id="description" required placeholder="Tuliskan deskripsi lengkap akun..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Upload Foto Akun (<span style="color: #ffcc00;">Wajib tepat 5 Foto</span>)</label>
+                <input type="file" id="imageFiles" accept="image/*" multiple required>
+                <small style="color: #a0a5b5;">Pilih sekaligus 5 foto menggunakan tombol di atas.</small>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">Upload Akun Sekarang</button>
+        </form>
+    </div>
+
+    <!-- Panggil Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const uploadForm = document.getElementById('uploadForm');
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorMsg.textContent = "";
+            successMsg.textContent = "";
+
+            const title = document.getElementById('title').value;
+            const category = document.getElementById('category').value;
+            const price = document.getElementById('price').value;
+            const description = document.getElementById('description').value;
+            const imageInput = document.getElementById('imageFiles');
+            const files = imageInput.files;
+
+            // Validasi Minimal dan Maksimal 5 Foto
+            if (files.length !== 5) {
+                errorMsg.textContent = "Error: Anda harus memilih tepat 5 foto untuk akun ini!";
+                return;
+            }
+
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').textContent = "Mengunggah foto & data...";
+
+            try {
+                let imageUrls = [];
+
+                // Proses Upload 1 per 1 ke Supabase Storage (Bucket bernama 'account-images')
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}-${i}.${fileExt}`;
+                    const filePath = `${fileName}`;
+
+                    const { data: uploadData, error: uploadError } = await supabase.storage
+                        .from('account-images')
+                        .upload(filePath, file);
+
+                    if (uploadError) throw uploadError;
+
+                    // Ambil Public URL dari file yang diupload
+                    const { data: publicUrlData } = supabase.storage
+                        .from('account-images')
+                        .getPublicUrl(filePath);
+
+                    imageUrls.push(publicUrlData.publicUrl);
+                }
+
+                // Simpan Data ke Tabel Database Supabase ('accounts')
+                const { error: dbError } = await supabase
+                    .from('accounts')
+                    .insert([
+                        { 
+                            title: title, 
+                            category: category, 
+                            price: price, 
+                            description: description, 
+                            images: imageUrls, 
+                            status: 'available' 
+                        }
+                    ]);
+
+                if (dbError) throw dbError;
+
+                successMsg.textContent = "Berhasil! Akun dan 5 foto berhasil di-upload ke database.";
+                uploadForm.reset();
+            } catch (error) {
+                errorMsg.textContent = "Gagal mengunggah: " + error.message;
+            } finally {
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').textContent = "Upload Akun Sekarang";
+            }
+        });
+    </script>
+</body>
+</html>
