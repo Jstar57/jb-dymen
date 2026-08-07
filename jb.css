@@ -1,0 +1,381 @@
+/* --- RESET & VARIABLES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --bg-color: #0b0c10;
+    --primary-tosca: #008080; /* Toska Tua */
+    --light-tosca: #45a29e;
+    --white: #ffffff;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--light-tosca);
+}
+
+/* --- NAVBAR --- */
+header {
+    background-color: var(--bg-color);
+    border-bottom: 2px solid var(--primary-tosca);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.logo {
+    color: var(--white);
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: 1px solid var(--primary-tosca);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.logo span {
+    color: var(--primary-tosca);
+}
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+.nav-links a {
+    color: var(--light-tosca);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    padding: 5px 10px;
+}
+.nav-links a:hover, .nav-links a.active {
+    color: var(--white);
+    border-bottom: 2px solid var(--primary-tosca);
+}
+
+/* --- BANNER --- */
+.banner {
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1470&auto=format&fit=crop') center/cover;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-bottom: 2px solid var(--primary-tosca);
+    padding: 20px;
+}
+.banner h1 {
+    color: var(--white);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+.banner p {
+    color: var(--light-tosca);
+    font-size: 1.2rem;
+}
+
+/* --- MAIN CONTAINER & SEARCH --- */
+.main-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.search-box {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 20px;
+    background: transparent;
+    border: 2px solid var(--primary-tosca);
+    border-radius: 25px;
+    color: var(--white);
+    font-size: 1rem;
+    outline: none;
+}
+.search-box::placeholder {
+    color: var(--primary-tosca);
+}
+
+/* --- CATEGORIES --- */
+.categories {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+.category-btn {
+    background: transparent;
+    border: 2px solid var(--primary-tosca);
+    color: var(--light-tosca);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.category-btn:hover, .category-btn.active {
+    background-color: var(--primary-tosca);
+    color: var(--bg-color);
+}
+
+/* --- PRODUCTS GRID --- */
+.section-title {
+    color: var(--white);
+    border-left: 5px solid var(--primary-tosca);
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+.grid-products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+}
+.card {
+    background-color: #11141a;
+    border: 2px solid var(--primary-tosca);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.card-img {
+    width: 100%;
+    height: 180px;
+    background-color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-tosca);
+    font-weight: bold;
+    border-bottom: 2px solid var(--primary-tosca);
+}
+.card-body {
+    padding: 15px;
+}
+.card-title {
+    color: var(--white);
+    margin-bottom: 10px;
+}
+.card-price {
+    color: #00ffcc;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+.btn-buy {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: transparent;
+    border: 1px solid var(--primary-tosca);
+    color: var(--light-tosca);
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.btn-buy:hover {
+    background-color: var(--primary-tosca);
+    color: var(--bg-color);
+}
+
+/* --- FOOTER & FLOATING CS --- */
+footer {
+    background-color: #050608;
+    border-top: 2px solid var(--primary-tosca);
+    padding: 30px 20px;
+    text-align: center;
+    margin-top: 50px;
+}
+footer p {
+    color: var(--primary-tosca);
+}
+.cs-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary-tosca);
+    color: var(--bg-color);
+    padding: 15px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    transition: 0.3s;
+    z-index: 999;
+    border: 2px solid var(--light-tosca);
+}
+.cs-button:hover {
+    background-color: var(--light-tosca);
+    color: var(--bg-color);
+    transform: scale(1.05);
+}
+/* --- TAMBAHAN BADGE STATUS (LELANG & SOLD) --- */
+.card-img {
+    position: relative; /* Supaya posisi badge presisi di dalam gambar */
+}
+
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.badge-lelang {
+    background-color: #ffcc00;
+    color: #000000;
+    border: 1px solid #ffa600;
+}
+
+.badge-sold {
+    background-color: #ff3333;
+    color: #ffffff;
+    border: 1px solid #b30000;
+}
+/* --- UPDATE: STYLE LOGO NAVBAR & FOOTER BARU --- */
+
+/* Align logo teks dan gambar */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.nav-logo-img {
+    height: 40px; /* Ukuran tinggi logo di navbar */
+    width: auto;
+    object-fit: contain;
+}
+
+/* Banner di atas footer */
+.footer-header-banner {
+    width: 100%;
+    background-color: #000411; /* Background gelap di balik gambar transparan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-top: 2px solid var(--primary-tosca);
+}
+.footer-header-banner img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+}
+
+/* Layout Grid Footer */
+footer {
+    background-color: #11141a; /* Background footer diubah agak abu gelap seperti contoh */
+    border-top: none; 
+    padding: 50px 5% 20px 5%;
+    text-align: left; /* Teks rata kiri sesuai gambar */
+    margin-top: 0;
+}
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr; /* Kolom deskripsi lebih lebar */
+    gap: 40px;
+}
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr; /* Responsif kalau di HP jadi susun ke bawah */
+    }
+}
+
+.footer-col h3 {
+    color: #45a29e; /* Warna Toska cerah */
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+.footer-col .footer-brand {
+    color: #45a29e;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.footer-desc {
+    color: #a0a5b5;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* List di dalam Footer */
+.footer-col ul {
+    list-style: none;
+}
+.footer-col ul li {
+    margin-bottom: 12px;
+}
+.footer-col ul li a {
+    color: #a0a5b5;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+.footer-col ul li a:hover {
+    color: var(--white);
+    padding-left: 5px;
+}
+
+/* Icon Sosial Media Bulat */
+.social-icons {
+    display: flex;
+    gap: 12px;
+}
+.social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #222;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: 0.3s;
+}
+.social-icons .icon-ig { background-color: #e1306c; }
+.social-icons .icon-tt { background-color: #000000; border: 1px solid #333; }
+.social-icons .icon-yt { background-color: #ff0000; }
+.social-icons a:hover {
+    transform: scale(1.1);
+}
+
+/* Footer Hak Cipta */
+.footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #222;
+}
+.footer-bottom p {
+    color: #666;
+    font-size: 0.85rem;
+}
